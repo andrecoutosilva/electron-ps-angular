@@ -6,9 +6,10 @@ if (setupEvents.handleSquirrelEvent()) {
     return;
 }
 
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
+const settings = require('electron-settings');
 const iconPath = path.join(__dirname, './dist/assets/elevation.ico');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -16,9 +17,6 @@ const iconPath = path.join(__dirname, './dist/assets/elevation.ico');
 let win
 
 function createWindow () {
-    // require('./menu/mainmenu')
-    // require('./tray/traymenu')
-    
     // Create the browser window.
     // win = new BrowserWindow({width: 800, height: 600, frame: false})
     win = new BrowserWindow({
@@ -68,3 +66,61 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+// Listen for async message from renderer process
+ipcMain.on('async', (event, arg) => {  
+    // Print 1
+    console.log(arg);
+    // Reply on async message from renderer process
+    event.sender.send('async-reply', 2);
+});
+
+// Listen for sync message from renderer process
+ipcMain.on('sync', (event, arg) => {  
+    // Print 3
+    console.log(arg);
+    // Send value synchronously back to renderer process
+    event.returnValue = 4;
+    // Send async message to renderer process
+    //mainWindow.webContents.send('ping', 5);
+});
+
+// Listen for sync message from renderer process
+ipcMain.on('ping', (event, arg) => {  
+    // Print 3
+    console.log(arg);
+    // Send value synchronously back to renderer process
+    event.returnValue = 5;
+    // Send async message to renderer process
+    //mainWindow.webContents.send('ping', 5);    
+});
+
+ipcMain.on('getSettings', (event, arg) => {
+    
+    let hasPaths = settings.has('packagesPaths');
+    
+    if (!hasPaths)
+    {
+        settings.set('packagesPaths', {
+            paths : [
+                { id: 1, path: "C:\\Users\\{{username}}\\.nuget\\packages" } ,
+                { id: 2, path: "C:\\PrjNET\\Mainline\\{{ProjectName}}\\_localPackages" } ,
+                { id: 3, path: "C:\\PrjNET\\Mainline\\{{ProjectName}}\\_Packages" } ,
+            ]
+        });
+    }
+
+    event.returnValue = settings.get('packagesPaths');
+});
+
+ipcMain.on('setSettings', (event, arg) => {
+    console.log(arg);
+    settings.set('packagesPaths.paths', arg);
+    event.returnValue = arg;
+});
+
+// Make method externaly visible
+exports.pong = arg => {  
+    //Print 6
+    console.log(arg);
+}

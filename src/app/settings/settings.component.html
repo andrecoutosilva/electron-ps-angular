@@ -1,0 +1,43 @@
+<mat-toolbar>
+  <h2>Settings</h2>
+</mat-toolbar>
+<section>
+  <form (ngSubmit)="onSubmit()" #settingsForm="ngForm" class="settings-form">
+    <mat-card>
+      <h2 class="title">Packages folders</h2>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let folder of folders">
+            <!-- <p mat-line>{{folder.path}}</p> -->
+            <mat-form-field class="settings-full-width">
+              <input name="folder-{{folder.id}}" matInput [readonly]="isReadOnly" [(ngModel)]="folder.path" #folderInput/>
+            </mat-form-field>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+      <mat-card-actions align="right">
+        <button class="button" type="button" mat-raised-button color="primary" (click)="onEdit()" [disabled]="isEditDisabled">Edit</button>
+        <button class="button" type="submit" mat-raised-button color="primary" [disabled]="isSaveDisabled">Save</button>
+      </mat-card-actions>
+    </mat-card>  
+  </form>
+  <!-- <form (ngSubmit)="onSubmit()" #settingsForm="ngForm" class="settings-form">
+      <mat-card>
+        <h2 class="title">Packages folders</h2>
+        <mat-card-content>
+          <mat-selection-list #packageFolders>
+            <mat-list-option *ngFor="let folder of folders">
+              <mat-form-field class="settings-full-width">
+                <input matInput [readonly]="isReadOnly"  [(ngModel)]="" name="projectName">
+              </mat-form-field>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-card-content>
+        <mat-card-actions align="right">
+          <button class="button" type="button" mat-raised-button color="primary" (click)="onEdit()" [disabled]="isEditDisabled">Edit</button>
+          
+          <button class="button" type="submit" mat-raised-button color="primary" (click)="onSave()" [disabled]="isSaveDisabled">Save</button>
+        </mat-card-actions>
+      </mat-card>  
+    </form> -->
+</section>

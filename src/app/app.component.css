@@ -30,3 +30,6 @@
     flex: 1 0 auto;
   }
   
+  .filler-content {
+    padding: 20px;
+  }
