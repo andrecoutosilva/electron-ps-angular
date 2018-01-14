@@ -22,7 +22,6 @@ import { SettingsComponent } from './settings/settings.component';
 import { PackageCleanerComponent } from './package-cleaner/package-cleaner.component';
 import { VersionCheckerComponent } from './version-checker/version-checker.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

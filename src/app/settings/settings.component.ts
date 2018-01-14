@@ -15,13 +15,6 @@ export class SettingsComponent implements OnInit {
 
   constructor(private _electronService: ElectronService) { }
   
-  
-  projectName = "";
-  
-  settings = {
-    projectName : "",
-  };
-
   ngOnInit() {
     this.getSettings();
   }
@@ -38,16 +31,6 @@ export class SettingsComponent implements OnInit {
     
     } else 
     {
-      // this.folders = [
-      //   "C:\\Users\\user.name\\.nuget\\packages" ,
-      //   "C:\\PrjNET\\Projeto Teste\\Mainline\\_Packages" ,
-      //   "C:\\PrjNET\\Projeto Teste\\Mainline\\_localPackages" ,
-      // ]
-      // this.folders = [
-      //   { path: "C:\\PrjNET\\Mainline\\_localPackages" } ,
-      //   { path: "C:\\PrjNET\\Mainline\\_Packages" } ,
-      //   { path: "C:\\Users\\andre.silva\\.nuget\\packages" } ,
-      // ]
       this.folders = [
         { id: 1, path: "C:\\Users\\andre.silva\\.nuget\\packages" } ,
         { id: 2, path: "C:\\PrjNET\\Mainline\\_localPackages" } ,
@@ -65,9 +48,6 @@ export class SettingsComponent implements OnInit {
 
   onSubmit() { 
     console.log("Form submitted!");
-    console.log("Project name is: " + this.projectName);
-    this.settings.projectName = this.projectName;
-    this.updateFolders(this.settings.projectName);
     this.isReadOnly = true;
     this.isSaveDisabled = true;
     this.isEditDisabled = false;
@@ -78,19 +58,5 @@ export class SettingsComponent implements OnInit {
     this.isReadOnly = !this.isReadOnly;
     this.isEditDisabled = true;
     this.isSaveDisabled = false;    
-  }
-
-  onSave() {
-    // this.isReadOnly = true;
-    // this.isSaveDisabled = true;
-    // this.isEditDisabled = false;
-  }
-
-  private updateFolders(projectName) {
-    // this.folders = [
-    //   { path: "C:\\Users\\andre.silva\\.nuget\\packages"} ,
-    //   { path: "C:\\PrjNET\\"+ projectName +"\\Mainline\\_Packages"} ,
-    //   { path: "C:\\PrjNET\\"+ projectName +"\\Mainline\\_localPackages"} ,
-    // ]
   }
 }

@@ -1,5 +1,5 @@
 //handle setupevents as quickly as possible
-const setupEvents = require('./installers/setupEvents')
+const setupEvents = require('./src/electron/installers/setupEvents')
 
 if (setupEvents.handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -11,12 +11,15 @@ const path = require('path')
 const url = require('url')
 const settings = require('electron-settings');
 const iconPath = path.join(__dirname, './dist/assets/elevation.ico');
+const powerShellRunner = require('./src/electron/ps-runner') 
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
 function createWindow () {
+    require('./src/electron/mainmenu')
+    require('./src/electron/traymenu')
     // Create the browser window.
     // win = new BrowserWindow({width: 800, height: 600, frame: false})
     win = new BrowserWindow({
@@ -34,7 +37,7 @@ function createWindow () {
     //win.loadURL('file://${__dirname}/dist/index.html')
     
     // Open the DevTools.
-    win.webContents.openDevTools()
+    //win.webContents.openDevTools()
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -117,6 +120,18 @@ ipcMain.on('setSettings', (event, arg) => {
     console.log(arg);
     settings.set('packagesPaths.paths', arg);
     event.returnValue = arg;
+});
+
+
+ipcMain.on('cleanPackages', (event, arg) => {
+    console.log("Cleaning Packages...");
+
+    let packagesPaths = settings.get('packagesPaths');
+    
+    powerShellRunner.runScript(packagesPaths.paths)
+    .then(output => {
+        event.returnValue = "Done Cleaning!";
+    });
 });
 
 // Make method externaly visible

@@ -1,10 +1,16 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <h2>Package Cleaner</h2>
 </mat-toolbar>
-<p>This will delete all the packages in the selected folders.</p>
-<mat-list>
-  <mat-list-item *ngFor="let message of messages">
-    <mat-icon matListIcon>folder</mat-icon>
-    <h3 matLine> {{message.from}} </h3>
-  </mat-list-item>
-</mat-list>
+<mat-card>
+  <h2 class="title">This will delete all the packages in the selected folders.</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let folder of folders">
+      <mat-icon matListIcon>folder</mat-icon>
+      <h3 matLine> {{folder.path}} </h3>
+    </mat-list-item>
+  </mat-list>
+  <mat-card-actions align="right">
+    <button class="button" type="button" mat-raised-button color="primary" 
+      (click)="cleanPackages()" [disabled]="isCleaning">Clean!</button>
+  </mat-card-actions>
+</mat-card>
